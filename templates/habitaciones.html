@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <title>Lista de Habitaciones</title>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'inicio' %}">Tu Hotel</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mt-4">Lista de Habitaciones</h1>
+        <ul class="list-group mt-4">
+            {% for habitacion in habitaciones %}
+            <li class="list-group-item">
+                <h2>Habitación {{ habitacion.numero }}</h2>
+                {% if habitacion.imagen %}
+                <img src="{{ habitacion.imagen.url }}" alt="Imagen de la habitación {{ habitacion.numero }}" class="img-fluid">
+                {% else %}
+                <p>No hay imagen disponible para esta habitación.</p>
+                {% endif %}
+                <p><strong>Tipo:</strong> {{ habitacion.get_tipo_display }}</p>
+                <p><strong>Precio:</strong> ${{ habitacion.precio }} por noche</p>
+                <p><strong>Descripción:</strong> {{ habitacion.descripcion }}</p>
+                <p><strong>Disponibilidad:</strong> {% if habitacion.disponible %} Disponible {% else %} No disponible {% endif %}</p>
+                <a href="{% url 'detalle_habitacion' habitacion.id %}" class="btn btn-primary btn-sm">Ver Detalles</a>
+                <a href="{% url 'reservar_habitacion' habitacion.id %}" class="btn btn-success btn-sm">Reservar</a>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <a href="{% url 'inicio' %}" class="btn btn-primary mt-4">Volver al Inicio</a>
+    </div>
+    
+    <div class="footer">
+        &copy; {{ year }} Tu Hotel - Todos los derechos reservados
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
